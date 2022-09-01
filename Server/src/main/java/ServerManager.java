@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 public class ServerManager {
     ServerSender serverSender;
@@ -71,6 +72,10 @@ public class ServerManager {
                 answer.setMessage("The command was executed" + '\n');
             }
         }
+
+        //Сортировка в обратном лексикографическом порядке с помощью Stream API и лямбда-выражений
+        Stream<String> stream = collection.collection.keySet().stream().sorted((key1, key2) -> -key1.compareTo(key2));
+        stream.forEach((s) -> collection.collection.put(s, collection.collection.remove(s)));
 
         ByteBuffer buffer = Transformation.Serialization(answer);
         serverSender.send(buffer);

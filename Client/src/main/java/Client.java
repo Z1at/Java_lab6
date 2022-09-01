@@ -10,6 +10,7 @@ public class Client {
         Scanner scanner = new Scanner(System.in);
         DatagramChannel clientChannel = DatagramChannel.open();
         InetSocketAddress serverAddress = new InetSocketAddress("localhost", Integer.parseInt(args[0]));
+        clientChannel.connect(serverAddress);
         ClientSender clientSender = new ClientSender(clientChannel, serverAddress);
         ClientReceiver clientReceiver = new ClientReceiver(clientChannel);
         ClientManager clientManager = new ClientManager(clientReceiver, clientSender);
