@@ -25,7 +25,7 @@ public class Save {
                 for (String key : collection.collection.keySet()) {
                     City city = collection.collection.get(key);
                     writer.write(key + ';' + city.getId() + ";" + city.getName() + ";" + "(" + city.getCoordinates().getX()
-                            + "; " + city.getCoordinates().getY() + ")" + ";" +
+                            + ", " + city.getCoordinates().getY() + ")" + ";" +
                             city.getCreationDate() + ";" + city.getArea() + ";" + city.getPopulation() + ";" +
                             city.getMetersAboveSeaLevel() + ";" + city.getClimate() + ";" + city.getGovernment() + ";" +
                             city.getStandardOfLiving() + ";" + city.getGovernor().getName() + ". " +

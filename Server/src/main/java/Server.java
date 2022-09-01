@@ -12,20 +12,15 @@ import java.util.*;
 
 public class Server {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        DatagramChannel serverChannel = DatagramChannel.open();
-        serverChannel.configureBlocking(false);
-        serverChannel.bind(new InetSocketAddress("localhost", 777));
-        Collection collection = new Collection();
-        ServerReceiver serverReceiver = new ServerReceiver(serverChannel);
-        ServerSender serverSender = new ServerSender(serverChannel);
-//        String environmentVariable = System.getenv("Lab6");
-        String environmentVariable = args[0];
+        String environmentVariable = System.getenv("Lab6");
+//        String environmentVariable = args[0];
         while(true){
             Scanner scanner = new Scanner(System.in);
             if(environmentVariable == null){
                 System.out.println("The environment variable has not been set, enter the path to the file that can be read and written to:");
                 environmentVariable = scanner.nextLine();
             }
+            environmentVariable += ".csv";
             File check = new File(environmentVariable);
             try {
                 check.createNewFile();
@@ -37,7 +32,14 @@ public class Server {
             environmentVariable = null;
         }
         environmentVariable = environmentVariable.toLowerCase();
+
         System.out.println("The server has started working");
+        DatagramChannel serverChannel = DatagramChannel.open();
+        serverChannel.configureBlocking(false);
+        serverChannel.bind(new InetSocketAddress("localhost", 7354));
+        Collection collection = new Collection();
+        ServerReceiver serverReceiver = new ServerReceiver(serverChannel);
+        ServerSender serverSender = new ServerSender(serverChannel);
         ServerManager serverManager = new ServerManager(serverReceiver, serverSender, environmentVariable);
 
         Selector selector = Selector.open();

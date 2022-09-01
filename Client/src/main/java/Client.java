@@ -9,7 +9,8 @@ public class Client {
     public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
         DatagramChannel clientChannel = DatagramChannel.open();
-        InetSocketAddress serverAddress = new InetSocketAddress("localhost", Integer.parseInt(args[0]));
+//        InetSocketAddress serverAddress = new InetSocketAddress("localhost", Integer.parseInt(args[0]));
+        InetSocketAddress serverAddress = new InetSocketAddress("localhost", 7354);
         clientChannel.connect(serverAddress);
         ClientSender clientSender = new ClientSender(clientChannel, serverAddress);
         ClientReceiver clientReceiver = new ClientReceiver(clientChannel);
