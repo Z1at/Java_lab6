@@ -12,6 +12,19 @@ import java.util.*;
 
 public class Server {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
+        DatagramChannel serverChannel = DatagramChannel.open();
+        serverChannel.configureBlocking(false);
+
+        try {
+            int port = Integer.parseInt(System.getenv("port"));
+            serverChannel.bind(new InetSocketAddress("localhost", port));
+        }
+        catch(Exception ignored){
+            System.out.println(TextFormatting.getRedText("This port is busy or you entered the wrong port"));
+            System.out.println(TextFormatting.getRedText("Enter the desired port via the environment variable \"port\""));
+            System.exit(1);
+        }
+
         String environmentVariable = System.getenv("Lab6");
 //        String environmentVariable = args[0];
         while(true){
@@ -33,14 +46,11 @@ public class Server {
         }
         environmentVariable = environmentVariable.toLowerCase();
 
-        System.out.println("The server has started working");
-        DatagramChannel serverChannel = DatagramChannel.open();
-        serverChannel.configureBlocking(false);
-        serverChannel.bind(new InetSocketAddress("localhost", 7354));
         Collection collection = new Collection();
         ServerReceiver serverReceiver = new ServerReceiver(serverChannel);
         ServerSender serverSender = new ServerSender(serverChannel);
         ServerManager serverManager = new ServerManager(serverReceiver, serverSender, environmentVariable);
+        System.out.println("The server has started working");
 
         Selector selector = Selector.open();
         serverChannel.register(selector, SelectionKey.OP_READ);

@@ -10,7 +10,17 @@ public class Client {
         Scanner scanner = new Scanner(System.in);
         DatagramChannel clientChannel = DatagramChannel.open();
 //        InetSocketAddress serverAddress = new InetSocketAddress("localhost", Integer.parseInt(args[0]));
-        InetSocketAddress serverAddress = new InetSocketAddress("localhost", 7354);
+        InetSocketAddress serverAddress = null;
+        try {
+            int port = Integer.parseInt(System.getenv("port"));
+            serverAddress = new InetSocketAddress("localhost", port);
+        }
+        catch(Exception ignored){
+            System.out.println(TextFormatting.getRedText("This port is busy or you entered the wrong port"));
+            System.out.println(TextFormatting.getRedText("Enter the desired port via the environment variable \"port\""));
+            System.exit(1);
+        }
+
         clientChannel.connect(serverAddress);
         ClientSender clientSender = new ClientSender(clientChannel, serverAddress);
         ClientReceiver clientReceiver = new ClientReceiver(clientChannel);
