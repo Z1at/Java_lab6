@@ -16,8 +16,8 @@ public class Server {
         serverChannel.configureBlocking(false);
 
         try {
-//            int port = Integer.parseInt(System.getenv("port"));
-            int port = 7354;
+            int port = Integer.parseInt(System.getenv("port"));
+//            int port = 7354;
             serverChannel.bind(new InetSocketAddress("localhost", port));
         }
         catch(Exception ignored){
@@ -26,8 +26,8 @@ public class Server {
             System.exit(1);
         }
 
-//        String environmentVariable = System.getenv("Lab6");
-        String environmentVariable = args[0];
+        String environmentVariable = System.getenv("Lab6");
+//        String environmentVariable = args[0];
         while(true){
             Scanner scanner = new Scanner(System.in);
             if(environmentVariable == null){

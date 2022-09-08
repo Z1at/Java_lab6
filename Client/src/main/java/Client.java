@@ -12,8 +12,8 @@ public class Client {
 //        InetSocketAddress serverAddress = new InetSocketAddress("localhost", Integer.parseInt(args[0]));
         InetSocketAddress serverAddress = null;
         try {
-//            int port = Integer.parseInt(System.getenv("port"));
-            int port = 7354;
+            int port = Integer.parseInt(System.getenv("port"));
+//            int port = 7354;
             serverAddress = new InetSocketAddress("localhost", port);
         }
         catch(Exception ignored){
