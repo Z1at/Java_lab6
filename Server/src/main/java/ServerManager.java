@@ -78,8 +78,8 @@ public class ServerManager {
         stream.forEach((s) -> collection.collection.put(s, collection.collection.remove(s)));
 
         int i = 0;
-        for(; i + 10000 < answer.message.length(); i += 10000){
-            serverSender.send(Transformation.Serialization(new ServerMessage(answer.message.substring(i, i + 10000))));
+        for(; i + 9000 < answer.message.length(); i += 9000){
+            serverSender.send(Transformation.Serialization(new ServerMessage(answer.message.substring(i, i + 9000))));
             Thread.sleep(50);
         }
 
