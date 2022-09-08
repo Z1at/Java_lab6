@@ -23,7 +23,7 @@ public class ServerManager {
         this.environmentVariable = environmentVariable;
     }
 
-    public void run(Collection collection) throws IOException, ClassNotFoundException {
+    public void run(Collection collection) throws IOException, ClassNotFoundException, InterruptedException {
         ServerMessage answer = new ServerMessage("The command was executed" + '\n');
         ByteBuffer byteBuffer = serverReceiver.receive(serverSender);
         ClientMessage clientMessage = (ClientMessage) Transformation.Deserialization(byteBuffer);
@@ -77,7 +77,17 @@ public class ServerManager {
         Stream<String> stream = collection.collection.keySet().stream().sorted((key1, key2) -> -key1.compareTo(key2));
         stream.forEach((s) -> collection.collection.put(s, collection.collection.remove(s)));
 
-        ByteBuffer buffer = Transformation.Serialization(answer);
-        serverSender.send(buffer);
+        int i = 0;
+        for(; i + 10000 < answer.message.length(); i += 10000){
+            serverSender.send(Transformation.Serialization(new ServerMessage(answer.message.substring(i, i + 10000))));
+            Thread.sleep(50);
+        }
+
+        if(i < answer.message.length()){
+            serverSender.send(Transformation.Serialization(new ServerMessage(answer.message.substring(i))));
+            Thread.sleep(50);
+        }
+
+        serverSender.send(Transformation.Serialization(new ServerMessage("end")));
     }
 }
